@@ -1,0 +1,1450 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andrian Reo | Web3 & Crypto Analyst</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                        mono: ['Fira Code', 'monospace']
+                    },
+                    colors: {
+                        brand: {
+                            dark: '#101010',
+                            card: '#171717',
+                            cardHover: '#1f1f1f',
+                            border: '#303030',
+                            borderLight: '#444444',
+                            accent: '#e2e8f0',
+                            muted: '#999999'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Three.js Library for 3D Hero -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style>
+        /* Custom Styles & Overrides */
+        body {
+            background-color: #101010;
+            color: #f5f5f5;
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #101010;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #303030;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555555;
+        }
+
+        /* Hero Background Glow - Pure Neutral Monochrome */
+        .hero-glow {
+            background: radial-gradient(
+                ellipse at 75% 40%,
+                #2a2a2a 0%,
+                #181818 35%,
+                #101010 75%
+            );
+        }
+
+        /* Glowing card border effects in subtle silver */
+        .glow-border {
+            position: relative;
+        }
+        .glow-border::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            padding: 1px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.03), rgba(255,255,255,0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        /* Terminal Glass effect */
+        .terminal-window {
+            background: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(16px);
+        }
+
+        /* Hide scrollbar for clean carousel UI while keeping functionality */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* 3D Coverflow card perspective & tilt effect */
+        .carousel-item {
+            scroll-snap-align: center;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, border-color 0.3s ease;
+            will-change: transform;
+        }
+        
+        .carousel-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #777777;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-neutral-700 selection:text-white">
+
+    <!-- 1. NAVBAR -->
+    <header class="w-full bg-[#101010]/90 backdrop-blur-md border-b border-brand-border/60 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <a href="#" class="text-3xl font-extrabold tracking-tighter text-white hover:text-neutral-300 transition-colors">
+                AR<span class="text-neutral-500">.</span>
+            </a>
+
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                <a href="#home" class="text-white hover:text-white transition-colors">Home</a>
+                <a href="#about" class="text-neutral-400 hover:text-white transition-colors">About</a>
+                <a href="#projects" class="text-neutral-400 hover:text-white transition-colors">Projects</a>
+                <a href="#research" class="text-neutral-400 hover:text-white transition-colors">Research</a>
+                <a href="#skills" class="text-neutral-400 hover:text-white transition-colors">Skills</a>
+            </nav>
+
+            <!-- Social Links & CLI Button -->
+            <div class="flex items-center space-x-4">
+                <div class="hidden sm:flex items-center space-x-4 text-xs font-semibold text-neutral-400">
+                    <a href="https://github.com/andrian12Z" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors px-2.5 py-1 rounded bg-neutral-900 border border-neutral-800">GitHub ↗</a>
+                    <a href="https://www.linkedin.com/in/muhammad-andrian-reo-wibowo-315b5a394" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors px-2.5 py-1 rounded bg-neutral-900 border border-neutral-800">LinkedIn ↗</a>
+                    <a href="https://t.me/Andrianreo01" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors px-2.5 py-1 rounded bg-neutral-900 border border-neutral-800">Telegram ↗</a>
+                </div>
+
+                <!-- CLI Trigger Button -->
+                <button id="cli-toggle-btn" class="bg-neutral-800 border border-neutral-700 hover:bg-white hover:text-black text-white font-mono font-bold text-xs px-3 py-2 rounded-lg transition-all flex items-center gap-1.5 shadow-lg">
+                    <span class="text-white font-extrabold">>_</span> CLI
+                </button>
+
+                <!-- Mobile menu button -->
+                <button id="mobile-menu-btn" class="md:hidden text-neutral-400 hover:text-white p-2">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-brand-card border-b border-brand-border px-6 py-4 space-y-3 text-sm font-medium">
+            <a href="#home" class="block text-white">Home</a>
+            <a href="#about" class="block text-neutral-400 hover:text-white">About</a>
+            <a href="#projects" class="block text-neutral-400 hover:text-white">Projects</a>
+            <a href="#research" class="block text-neutral-400 hover:text-white">Research</a>
+            <a href="#skills" class="block text-neutral-400 hover:text-white">Skills</a>
+            <div class="pt-3 border-t border-neutral-800 flex gap-4 text-xs font-mono text-neutral-400">
+                <a href="https://github.com/andrian12Z" target="_blank">GitHub</a>
+                <a href="https://www.linkedin.com/in/muhammad-andrian-reo-wibowo-315b5a394" target="_blank">LinkedIn</a>
+                <a href="https://t.me/Andrianreo01" target="_blank">Telegram</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION WITH 3D CANVAS -->
+    <section class="relative min-h-[85vh] flex items-center hero-glow px-6 md:px-12 py-16 overflow-hidden" id="home">
+        <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+            
+            <!-- Left Hero Content -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-neutral-900 border border-neutral-700/80 text-xs font-mono text-neutral-300">
+                    <span class="w-2 h-2 rounded-full bg-neutral-300 animate-pulse"></span>
+                    <span>WEB3 • CRYPTO • BLOCKCHAIN</span>
+                </div>
+
+                <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight text-white leading-none">
+                    Andrian Reo
+                </h1>
+
+                <h2 class="text-2xl md:text-3xl font-normal text-neutral-300">
+                    Web3 & Crypto Analyst
+                </h2>
+
+                <p class="text-neutral-400 text-base md:text-lg max-w-xl leading-relaxed">
+                    Researching the next big opportunities in Web3. Analyzing crypto markets, exploring blockchain primitives, and building deep technical & quantitative understanding of the decentralized ecosystem.
+                </p>
+
+                <div class="flex flex-wrap items-center gap-4 pt-4">
+                    <a href="#projects" class="px-6 py-3.5 bg-white text-black font-semibold text-sm rounded-full hover:bg-neutral-200 transition-all transform hover:-translate-y-0.5 shadow-xl">
+                        Explore My Projects →
+                    </a>
+                    <a href="mailto:andrianreo1230@gmail.com?subject=Portfolio%20Inquiry" class="px-6 py-3.5 border border-neutral-600 hover:border-white text-white font-semibold text-sm rounded-full hover:bg-white hover:text-black transition-all">
+                        ✉ Contact Me
+                    </a>
+                </div>
+
+                <!-- Live Status Card -->
+                <div class="pt-6 grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-lg border-t border-neutral-800/80 mt-6">
+                    <div>
+                        <div class="text-xs text-neutral-500 font-mono">FOCUS</div>
+                        <div class="text-sm font-semibold text-neutral-200">On-Chain Analytics</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-neutral-500 font-mono">STACK</div>
+                        <div class="text-sm font-semibold text-neutral-200">Solidity, Python, JS</div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-neutral-500 font-mono">STATUS</div>
+                        <div class="text-sm font-semibold text-white">Open for Research</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right 3D Visual Canvas (Wireframe Cube + Orbiting Metallic Chains) -->
+            <div class="lg:col-span-5 h-[420px] md:h-[500px] w-full relative flex items-center justify-center">
+                <div id="hero-3d" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+                <!-- Radial Glow overlay -->
+                <div class="absolute inset-0 pointer-events-none bg-radial from-white/5 via-transparent to-transparent blur-3xl"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 3. KEY HIGHLIGHTS SECTION -->
+    <section class="bg-brand-card border-y border-brand-border py-8 px-6" id="about">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 divide-y md:divide-y-0 md:divide-x divide-neutral-800">
+            <div class="flex items-center space-x-5 pt-4 md:pt-0 md:px-6">
+                <div class="text-3xl text-neutral-300 font-mono p-3 bg-neutral-900 border border-neutral-800 rounded-xl">▥</div>
+                <div>
+                    <h3 class="font-bold text-white text-base">Market Analysis</h3>
+                    <p class="text-xs text-neutral-400 mt-1">BTC Structure, Derivatives, Liquidity & Order Books</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-5 pt-4 md:pt-0 md:px-6">
+                <div class="text-3xl text-neutral-300 font-mono p-3 bg-neutral-900 border border-neutral-800 rounded-xl">◇</div>
+                <div>
+                    <h3 class="font-bold text-white text-base">On-Chain Research</h3>
+                    <p class="text-xs text-neutral-400 mt-1">Wallet Tracking, Exchange Inflows & Contract Metrics</p>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-5 pt-4 md:pt-0 md:px-6">
+                <div class="text-3xl text-neutral-300 font-mono p-3 bg-neutral-900 border border-neutral-800 rounded-xl">&lt;/&gt;</div>
+                <div>
+                    <h3 class="font-bold text-white text-base">Technical Skills</h3>
+                    <p class="text-xs text-neutral-400 mt-1">Python, Solidity, Foundry, Ethers.js & Cryptography</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. FEATURED PROJECTS SECTION (WITH MONOCHROME INTERACTIVE WIDGETS) -->
+    <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto" id="projects">
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <span class="text-xs font-bold font-mono tracking-widest text-neutral-400 uppercase">My Work & Interactive Demos</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white">Featured Projects</h2>
+            <p class="text-neutral-400 text-sm leading-relaxed">
+                Hands-on blockchain development, smart contracts, and algorithmic crypto market analysis tools. Try out the live interactive widgets built into each project card.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+            <!-- PROJECT 01: BLOCKCHAIN FROM SCRATCH (WITH LIVE SHA-256 BLOCK MINER WIDGET) -->
+            <div class="bg-brand-card border border-brand-border hover:border-neutral-500 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 glow-border">
+                <div>
+                    <div class="flex items-center justify-between text-xs font-mono text-neutral-400 mb-4">
+                        <span>01 / BLOCKCHAIN</span>
+                        <span class="px-2 py-0.5 bg-neutral-800 text-neutral-300 rounded">JS & Crypto</span>
+                    </div>
+
+                    <div class="text-4xl mb-4 text-white">⛓</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Blockchain From Scratch</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-6">
+                        A fully functional blockchain engine built with JavaScript, featuring Proof of Work, SHA-256 hashing, transaction validation, and Merkle trees.
+                    </p>
+
+                    <!-- INTERACTIVE WIDGET: SHA-256 MINER -->
+                    <div class="bg-black/60 border border-neutral-800 rounded-xl p-4 mb-6 space-y-3 text-left font-mono">
+                        <div class="flex justify-between items-center text-xs text-neutral-400 border-b border-neutral-800 pb-2">
+                            <span class="text-white font-bold">⚡ LIVE SHA-256 MINER</span>
+                            <span id="miner-status" class="text-[10px] bg-neutral-800 px-2 py-0.5 rounded text-neutral-300">Target: 00...</span>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <div>
+                                <label class="text-[10px] text-neutral-500 block mb-1">DATA PAYLOAD:</label>
+                                <input type="text" id="miner-data" value="Tx: Andrian -> Alice (5 BTC)" class="w-full bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-neutral-400">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-[10px] text-neutral-500 block mb-1">NONCE:</label>
+                                    <input type="number" id="miner-nonce" value="1042" class="w-full bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-white text-xs focus:outline-none focus:border-neutral-400">
+                                </div>
+                                <div>
+                                    <label class="text-[10px] text-neutral-500 block mb-1">DIFFICULTY:</label>
+                                    <select id="miner-diff" class="w-full bg-neutral-900 border border-neutral-700 rounded px-2 py-1 text-white text-xs focus:outline-none">
+                                        <option value="1">1 Zero (0...)</option>
+                                        <option value="2" selected>2 Zeros (00...)</option>
+                                        <option value="3">3 Zeros (000...)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-neutral-500 block mb-1">CALCULATED HASH:</label>
+                                <div id="miner-hash-output" class="bg-neutral-950 p-2 rounded text-[10px] text-neutral-300 break-all border border-neutral-800 font-mono min-h-[36px]">
+                                    computing...
+                                </div>
+                            </div>
+                        </div>
+
+                        <button id="mine-block-btn" class="w-full py-2 bg-neutral-800 hover:bg-white hover:text-black text-white text-xs font-bold rounded transition-colors flex items-center justify-center gap-2">
+                            <span>⛏️</span> Mine Valid Block
+                        </button>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">JavaScript</span>
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">SHA-256</span>
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Proof of Work</span>
+                    </div>
+                </div>
+
+                <a href="https://github.com/andrian12Z/blockchain-from-scratch" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-bold text-white hover:text-neutral-400 transition-colors">
+                    View Repository ↗
+                </a>
+            </div>
+
+            <!-- PROJECT 02: DEFI STAKING PROTOCOL (WITH INTERACTIVE YIELD CALCULATOR) -->
+            <div class="bg-brand-card border border-brand-border hover:border-neutral-500 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 glow-border">
+                <div>
+                    <div class="flex items-center justify-between text-xs font-mono text-neutral-400 mb-4">
+                        <span>02 / DEFI</span>
+                        <span class="px-2 py-0.5 bg-neutral-800 text-neutral-300 rounded">Solidity & Foundry</span>
+                    </div>
+
+                    <div class="text-4xl mb-4 text-white">◇</div>
+                    <h3 class="text-xl font-bold text-white mb-2">DeFi Staking Protocol</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-6">
+                        Decentralized staking smart contract supporting reward calculations, dynamic APY scaling, token locking, and security checks tested with Foundry.
+                    </p>
+
+                    <!-- INTERACTIVE WIDGET: STAKING CALCULATOR -->
+                    <div class="bg-black/60 border border-neutral-800 rounded-xl p-4 mb-6 space-y-3 text-left font-mono">
+                        <div class="flex justify-between items-center text-xs text-neutral-400 border-b border-neutral-800 pb-2">
+                            <span class="text-white font-bold">🧮 YIELD CALCULATOR</span>
+                            <span class="text-[10px] text-neutral-400">Base APY: <span id="apy-badge" class="text-white font-bold">12.5%</span></span>
+                        </div>
+
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <div class="flex justify-between text-[10px] text-neutral-400 mb-1">
+                                    <span>STAKING AMOUNT:</span>
+                                    <span id="stake-amount-val" class="text-white font-bold">5.0 ETH</span>
+                                </div>
+                                <input type="range" id="stake-amount-slider" min="0.5" max="50" step="0.5" value="5" class="w-full accent-white bg-neutral-800 h-1.5 rounded-lg appearance-none cursor-pointer">
+                            </div>
+
+                            <div>
+                                <label class="text-[10px] text-neutral-500 block mb-1">LOCK DURATION:</label>
+                                <div class="grid grid-cols-4 gap-1">
+                                    <button class="stake-period-btn active bg-white text-black px-1.5 py-1 text-[10px] rounded font-bold" data-days="30">30d</button>
+                                    <button class="stake-period-btn bg-neutral-900 border border-neutral-800 text-neutral-400 px-1.5 py-1 text-[10px] rounded" data-days="90">90d</button>
+                                    <button class="stake-period-btn bg-neutral-900 border border-neutral-800 text-neutral-400 px-1.5 py-1 text-[10px] rounded" data-days="180">180d</button>
+                                    <button class="stake-period-btn bg-neutral-900 border border-neutral-800 text-neutral-400 px-1.5 py-1 text-[10px] rounded" data-days="365">365d</button>
+                                </div>
+                            </div>
+
+                            <div class="bg-neutral-900 p-2.5 rounded border border-neutral-800 space-y-1">
+                                <div class="flex justify-between text-[11px]">
+                                    <span class="text-neutral-400">Est. Rewards:</span>
+                                    <span id="calc-reward" class="text-white font-bold">+0.051 ETH</span>
+                                </div>
+                                <div class="flex justify-between text-[11px]">
+                                    <span class="text-neutral-400">Total Return:</span>
+                                    <span id="calc-total" class="text-white font-bold">5.051 ETH</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Solidity</span>
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Foundry</span>
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">OpenZeppelin</span>
+                    </div>
+                </div>
+
+                <a href="https://github.com/andrian12Z/defi-staking-protocol" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-bold text-white hover:text-neutral-400 transition-colors">
+                    View Repository ↗
+                </a>
+            </div>
+
+            <!-- PROJECT 03: CRYPTO TRADING ANALYTICS (WITH LIVE SENTIMENT & MONITOR) -->
+            <div class="bg-brand-card border border-brand-border hover:border-neutral-500 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 glow-border">
+                <div>
+                    <div class="flex items-center justify-between text-xs font-mono text-neutral-400 mb-4">
+                        <span>03 / CRYPTO ANALYTICS</span>
+                        <span class="px-2 py-0.5 bg-neutral-800 text-neutral-300 rounded">Python & Market Data</span>
+                    </div>
+
+                    <div class="text-4xl mb-4 text-white">₿</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Crypto Trading Analytics</h3>
+                    <p class="text-neutral-400 text-sm leading-relaxed mb-6">
+                        A BTC Daily Market Monitor built with Python, focusing on leverage tracking, order book depth, funding rates, and volume analysis.
+                    </p>
+
+                    <!-- INTERACTIVE WIDGET: MARKET SENTIMENT GAUGE (MONOCHROME) -->
+                    <div class="bg-black/60 border border-neutral-800 rounded-xl p-4 mb-6 space-y-3 text-left font-mono">
+                        <div class="flex justify-between items-center text-xs text-neutral-400 border-b border-neutral-800 pb-2">
+                            <span class="text-white font-bold">📊 MARKET SENTIMENT</span>
+                            <span class="text-[10px] text-white font-bold">FEAR & GREED: 74</span>
+                        </div>
+
+                        <div class="space-y-2 text-xs">
+                            <div>
+                                <div class="flex justify-between text-[10px] text-neutral-400 mb-1">
+                                    <span>BTC Funding Rate:</span>
+                                    <span class="text-white font-bold">+0.014% (Bullish)</span>
+                                </div>
+                                <div class="w-full bg-neutral-800 h-2 rounded-full overflow-hidden flex">
+                                    <div class="bg-neutral-200 h-full" style="width: 72%"></div>
+                                    <div class="bg-neutral-600 h-full" style="width: 28%"></div>
+                                </div>
+                                <div class="flex justify-between text-[9px] text-neutral-500 mt-1">
+                                    <span>Longs: 72%</span>
+                                    <span>Shorts: 28%</span>
+                                </div>
+                            </div>
+
+                            <div class="pt-2 border-t border-neutral-800/60 grid grid-cols-2 gap-2 text-[10px]">
+                                <div class="bg-neutral-900 p-2 rounded border border-neutral-800">
+                                    <span class="text-neutral-500 block">24h Vol:</span>
+                                    <span class="text-white font-bold">$42.8B</span>
+                                </div>
+                                <div class="bg-neutral-900 p-2 rounded border border-neutral-800">
+                                    <span class="text-neutral-500 block">Open Interest:</span>
+                                    <span class="text-white font-bold">$38.4B</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Python</span>
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Bitcoin</span>
+                        <span class="text-xs px-2.5 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Market Analytics</span>
+                    </div>
+                </div>
+
+                <a href="https://github.com/andrian12Z/crypto-trading-analytics" target="_blank" rel="noopener noreferrer" class="inline-flex items-center text-sm font-bold text-white hover:text-neutral-400 transition-colors">
+                    View Repository ↗
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 5. RESEARCH & INSIGHTS SECTION (3D COVERFLOW SLIDE / CAROUSEL) -->
+    <section class="py-24 px-6 md:px-12 bg-[#141414] border-t border-brand-border" id="research">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-2xl mx-auto mb-10 space-y-3">
+                <span class="text-xs font-bold font-mono tracking-widest text-neutral-400 uppercase">WEB3 KNOWLEDGE BASE & RESEARCH</span>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-white">Crypto & Web3 Fundamental Research</h2>
+                <p class="text-neutral-400 text-sm leading-relaxed">
+                    Edukasi mendalam mengenai pilar-pilar arsitektur Web3. Geser carousel ke samping atau klik kartu persegi untuk membuka analisa lengkap beserta analogi visual.
+                </p>
+            </div>
+
+            <!-- Filter Category Tabs -->
+            <div class="flex justify-center flex-wrap gap-2 mb-10">
+                <button class="research-filter-btn active px-4 py-2 text-xs font-semibold rounded-full bg-white text-black transition-all" data-category="all">All Topics (8)</button>
+                <button class="research-filter-btn px-4 py-2 text-xs font-semibold rounded-full bg-neutral-900 text-neutral-400 border border-neutral-800 hover:text-white transition-all" data-category="primitives">Market & Primitives</button>
+                <button class="research-filter-btn px-4 py-2 text-xs font-semibold rounded-full bg-neutral-900 text-neutral-400 border border-neutral-800 hover:text-white transition-all" data-category="defi">DeFi & Trading</button>
+                <button class="research-filter-btn px-4 py-2 text-xs font-semibold rounded-full bg-neutral-900 text-neutral-400 border border-neutral-800 hover:text-white transition-all" data-category="infra">Security & Infra</button>
+            </div>
+
+            <!-- Carousel Controls & Scroll Container -->
+            <div class="relative group">
+                <!-- Navigation Prev / Next Buttons -->
+                <button id="carousel-prev-btn" class="absolute left-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/80 border border-neutral-700 text-white font-bold flex items-center justify-center hover:bg-white hover:text-black transition-all shadow-xl opacity-80 hover:opacity-100">
+                    ←
+                </button>
+                <button id="carousel-next-btn" class="absolute right-2 top-1/2 -translate-y-1/2 z-20 w-11 h-11 rounded-full bg-black/80 border border-neutral-700 text-white font-bold flex items-center justify-center hover:bg-white hover:text-black transition-all shadow-xl opacity-80 hover:opacity-100">
+                    →
+                </button>
+
+                <!-- 3D Coverflow Horizontal Slider Container -->
+                <div id="research-carousel" class="flex gap-6 overflow-x-auto no-scrollbar py-6 px-4 snap-x snap-mandatory cursor-grab active:cursor-grabbing select-none">
+
+                    <!-- CARD 1: BITCOIN -->
+                    <div class="carousel-item flex-none w-[280px] sm:w-[320px] aspect-square bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between cursor-pointer glow-border" data-category="primitives" data-id="btc">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-3">
+                                <span>01 / PRIMITIVES</span>
+                                <span class="px-2 py-0.5 bg-neutral-900 text-neutral-300 rounded border border-neutral-800">ASSET</span>
+                            </div>
+                            <div class="text-3xl text-white mb-2 font-mono font-bold">₿</div>
+                            <h3 class="text-lg font-bold text-white mb-2">Bitcoin (BTC)</h3>
+                            <p class="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4">
+                                Komoditas digital terdesentralisasi pertama dengan kelangkaan mutlak 21 juta koin, mekanisme Proof-of-Work, dan penyesuaian kesulitan otomatis.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                            <span class="text-neutral-400 font-mono text-[10px]">Supply Cap: 21M</span>
+                            <span class="font-bold text-white group-hover:translate-x-1 transition-transform">Detail ↗</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: KRIPTOGRAFI -->
+                    <div class="carousel-item flex-none w-[280px] sm:w-[320px] aspect-square bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between cursor-pointer glow-border" data-category="infra" data-id="crypto">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-3">
+                                <span>02 / SECURITY</span>
+                                <span class="px-2 py-0.5 bg-neutral-900 text-neutral-300 rounded border border-neutral-800">MATH</span>
+                            </div>
+                            <div class="text-3xl text-white mb-2 font-mono font-bold">🔑</div>
+                            <h3 class="text-lg font-bold text-white mb-2">Kriptografi</h3>
+                            <p class="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4">
+                                Fondasi matematis enkripsi asimetris (Public/Private Key), fungsi Hash SHA-256, Digital Signature (ECDSA), dan Zero-Knowledge Proofs.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                            <span class="text-neutral-400 font-mono text-[10px]">SHA-256 & ECDSA</span>
+                            <span class="font-bold text-white group-hover:translate-x-1 transition-transform">Detail ↗</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3: BLOCKCHAIN -->
+                    <div class="carousel-item flex-none w-[280px] sm:w-[320px] aspect-square bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between cursor-pointer glow-border" data-category="infra" data-id="chain">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-3">
+                                <span>03 / ARCHITECTURE</span>
+                                <span class="px-2 py-0.5 bg-neutral-900 text-neutral-300 rounded border border-neutral-800">LEDGER</span>
+                            </div>
+                            <div class="text-3xl text-white mb-2 font-mono font-bold">⛓</div>
+                            <h3 class="text-lg font-bold text-white mb-2">Blockchain</h3>
+                            <p class="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4">
+                                Buku besar terdistribusi yang tidak dapat diubah (immutable), jaringan P2P tanpa perantara, dan mesin state terdesentralisasi.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                            <span class="text-neutral-400 font-mono text-[10px]">Immutability</span>
+                            <span class="font-bold text-white group-hover:translate-x-1 transition-transform">Detail ↗</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 4: DEFI -->
+                    <div class="carousel-item flex-none w-[280px] sm:w-[320px] aspect-square bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between cursor-pointer glow-border" data-category="defi" data-id="defi">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-3">
+                                <span>04 / PROTOCOLS</span>
+                                <span class="px-2 py-0.5 bg-neutral-900 text-neutral-300 rounded border border-neutral-800">FINANCE</span>
+                            </div>
+                            <div class="text-3xl text-white mb-2 font-mono font-bold">🏦</div>
+                            <h3 class="text-lg font-bold text-white mb-2">DeFi (Decentralized Finance)</h3>
+                            <p class="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4">
+                                Infrastruktur keuangan tanpa izin dan tanpa kustodian. Layanan peminjaman (Lending/Borrowing) dan Money Legos berbasis smart contract.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                            <span class="text-neutral-400 font-mono text-[10px]">Money Legos</span>
+                            <span class="font-bold text-white group-hover:translate-x-1 transition-transform">Detail ↗</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 5: DEX -->
+                    <div class="carousel-item flex-none w-[280px] sm:w-[320px] aspect-square bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between cursor-pointer glow-border" data-category="defi" data-id="dex">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-3">
+                                <span>05 / TRADING</span>
+                                <span class="px-2 py-0.5 bg-neutral-900 text-neutral-300 rounded border border-neutral-800">AMM</span>
+                            </div>
+                            <div class="text-3xl text-white mb-2 font-mono font-bold">🔄</div>
+                            <h3 class="text-lg font-bold text-white mb-2">DEX (Decentralized Exchange)</h3>
+                            <p class="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4">
+                                Pertukaran token non-custodial menggunakan Automated Market Maker (AMM) bermodel constant product formula (x * y = k) dan Liquidity Pools.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                            <span class="text-neutral-400 font-mono text-[10px]">Constant Product</span>
+                            <span class="font-bold text-white group-hover:translate-x-1 transition-transform">Detail ↗</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 6: WALLETS -->
+                    <div class="carousel-item flex-none w-[280px] sm:w-[320px] aspect-square bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between cursor-pointer glow-border" data-category="infra" data-id="wallet">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-3">
+                                <span>06 / SECURITY</span>
+                                <span class="px-2 py-0.5 bg-neutral-900 text-neutral-300 rounded border border-neutral-800">STORAGE</span>
+                            </div>
+                            <div class="text-3xl text-white mb-2 font-mono font-bold">👛</div>
+                            <h3 class="text-lg font-bold text-white mb-2">Wallets: Hot & Cold</h3>
+                            <p class="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4">
+                                Manajemen Kunci Privat dan Seed Phrase 12/24 kata. Perbandingan keamanan Hot Wallet (Online/Extension) vs Cold Wallet (Hardware/Offline).
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                            <span class="text-neutral-400 font-mono text-[10px]">Self-Custody</span>
+                            <span class="font-bold text-white group-hover:translate-x-1 transition-transform">Detail ↗</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 7: STAKING -->
+                    <div class="carousel-item flex-none w-[280px] sm:w-[320px] aspect-square bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between cursor-pointer glow-border" data-category="defi" data-id="staking">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-3">
+                                <span>07 / CONSENSUS</span>
+                                <span class="px-2 py-0.5 bg-neutral-900 text-neutral-300 rounded border border-neutral-800">PoS YIELD</span>
+                            </div>
+                            <div class="text-3xl text-white mb-2 font-mono font-bold">🔒</div>
+                            <h3 class="text-lg font-bold text-white mb-2">Staking: Validator & Delegator</h3>
+                            <p class="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4">
+                                Mekanisme konsensus Proof-of-Stake (PoS). Peran Validator mengoperasikan node 24/7 dan Delegator menitipkan modal dengan risiko Slashing.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                            <span class="text-neutral-400 font-mono text-[10px]">PoS Rewards</span>
+                            <span class="font-bold text-white group-hover:translate-x-1 transition-transform">Detail ↗</span>
+                        </div>
+                    </div>
+
+                    <!-- CARD 8: ALTCOINS -->
+                    <div class="carousel-item flex-none w-[280px] sm:w-[320px] aspect-square bg-brand-card border border-brand-border rounded-2xl p-6 flex flex-col justify-between cursor-pointer glow-border" data-category="primitives" data-id="altcoin">
+                        <div>
+                            <div class="flex items-center justify-between text-[11px] font-mono text-neutral-400 mb-3">
+                                <span>08 / SECTORS</span>
+                                <span class="px-2 py-0.5 bg-neutral-900 text-neutral-300 rounded border border-neutral-800">ECOSYSTEM</span>
+                            </div>
+                            <div class="text-3xl text-white mb-2 font-mono font-bold">💎</div>
+                            <h3 class="text-lg font-bold text-white mb-2">Altcoins & Katagori Sektor</h3>
+                            <p class="text-neutral-400 text-xs line-clamp-3 leading-relaxed mb-4">
+                                Klasifikasi aset kripto alternatif: Layer-1, Layer-2 Scaling, DePIN (Physical Infra), RWA (Real World Assets), dan dinamika rotasi modal.
+                            </p>
+                        </div>
+                        <div class="pt-3 border-t border-neutral-800/80 flex items-center justify-between text-xs">
+                            <span class="text-neutral-400 font-mono text-[10px]">DePIN & RWA</span>
+                            <span class="font-bold text-white group-hover:translate-x-1 transition-transform">Detail ↗</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Research Tools & Data Sources Badges -->
+            <div class="mt-16 pt-8 border-t border-neutral-800/80 text-center">
+                <h3 class="text-sm font-semibold text-neutral-400 mb-6 font-mono">PRIMARY RESEARCH TOOLS & DATA SOURCES</h3>
+                <div class="flex flex-wrap justify-center gap-3">
+                    <a href="https://www.coinglass.com/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-xs font-medium rounded-xl transition-all">CoinGlass ↗</a>
+                    <a href="https://tokenterminal.com/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-xs font-medium rounded-xl transition-all">Token Terminal ↗</a>
+                    <a href="https://messari.io/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-xs font-medium rounded-xl transition-all">Messari ↗</a>
+                    <a href="https://coinmarketcap.com/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-xs font-medium rounded-xl transition-all">CoinMarketCap ↗</a>
+                    <a href="https://www.tradingview.com/" target="_blank" rel="noopener noreferrer" class="px-4 py-2 bg-neutral-900 hover:bg-neutral-800 border border-neutral-800 text-neutral-300 text-xs font-medium rounded-xl transition-all">TradingView ↗</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. SKILLS SECTION -->
+    <section class="py-24 px-6 md:px-12 max-w-7xl mx-auto" id="skills">
+        <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+            <span class="text-xs font-bold font-mono tracking-widest text-neutral-400 uppercase">MY EXPERTISE</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-white">Skills & Technologies</h2>
+            <p class="text-neutral-400 text-sm leading-relaxed">
+                Technical foundation and analytical methodology applied across smart contract development and crypto market evaluation.
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <!-- SKILL BLOCK 1 -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-neutral-500 transition-all">
+                <div class="text-2xl text-white mb-4">&lt;/&gt;</div>
+                <h3 class="text-lg font-bold text-white mb-2">Blockchain Development</h3>
+                <p class="text-neutral-400 text-xs leading-relaxed mb-4">
+                    Writing smart contracts and understanding lower-level blockchain mechanics and security.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Solidity</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">JavaScript</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Python</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Foundry</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Smart Contracts</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Ethers.js</span>
+                </div>
+            </div>
+
+            <!-- SKILL BLOCK 2 -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-neutral-500 transition-all">
+                <div class="text-2xl text-white mb-4">₿</div>
+                <h3 class="text-lg font-bold text-white mb-2">Crypto Market & Trading</h3>
+                <p class="text-neutral-400 text-xs leading-relaxed mb-4">
+                    Technical analysis, leverage tracking, risk modeling, and order flow metrics.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Technical Analysis</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Market Structure</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Futures Trading</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Risk Management</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Bitcoin Analysis</span>
+                </div>
+            </div>
+
+            <!-- SKILL BLOCK 3 -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-neutral-500 transition-all">
+                <div class="text-2xl text-white mb-4">⌕</div>
+                <h3 class="text-lg font-bold text-white mb-2">Research & Analytics</h3>
+                <p class="text-neutral-400 text-xs leading-relaxed mb-4">
+                    Extracting quantitative signals from raw blockchain data and market APIs.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Crypto Research</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Market Monitoring</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">On-chain Fundamentals</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Data Analytics</span>
+                </div>
+            </div>
+
+            <!-- SKILL BLOCK 4 -->
+            <div class="bg-brand-card border border-brand-border rounded-2xl p-6 hover:border-neutral-500 transition-all">
+                <div class="text-2xl text-white mb-4">⚙</div>
+                <h3 class="text-lg font-bold text-white mb-2">Tools & Platforms</h3>
+                <p class="text-neutral-400 text-xs leading-relaxed mb-4">
+                    Development environments, version control, and data visualization tools.
+                </p>
+                <div class="flex flex-wrap gap-2">
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">Git & GitHub</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">VS Code</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">OpenZeppelin</span>
+                    <span class="text-xs px-3 py-1 bg-neutral-900 border border-neutral-800 rounded text-neutral-300">TradingView PineScript</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. FOOTER & CONTACT SECTION -->
+    <footer class="bg-black border-t border-brand-border py-16 px-6 md:px-12">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+            <div>
+                <a href="#" class="text-3xl font-extrabold text-white tracking-tighter">AR<span class="text-neutral-500">.</span></a>
+                <p class="text-xs text-neutral-400 mt-2">© 2026 Andrian Reo • Web3 & Crypto Analyst. All rights reserved.</p>
+            </div>
+
+            <div class="flex items-center space-x-6 text-sm">
+                <a href="https://github.com/andrian12Z" target="_blank" rel="noopener noreferrer" class="text-neutral-400 hover:text-white transition-colors">GitHub</a>
+                <a href="https://www.linkedin.com/in/muhammad-andrian-reo-wibowo-315b5a394" target="_blank" rel="noopener noreferrer" class="text-neutral-400 hover:text-white transition-colors">LinkedIn</a>
+                <a href="https://t.me/Andrianreo01" target="_blank" rel="noopener noreferrer" class="text-neutral-400 hover:text-white transition-colors">Telegram</a>
+                <a href="mailto:andrianreo1230@gmail.com" class="text-white font-bold hover:underline">andrianreo1230@gmail.com</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 8. RESEARCH DETAIL MODAL (MONOCHROME WITH ANALOGY BOX BEFORE KEY ELEMENTS) -->
+    <div id="research-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="bg-brand-card border border-brand-border w-full max-w-2xl rounded-2xl p-6 md:p-8 space-y-6 relative max-h-[90vh] overflow-y-auto shadow-2xl">
+            <button id="close-modal-btn" class="absolute top-4 right-4 text-neutral-400 hover:text-white text-xl p-2 font-mono">✕</button>
+
+            <div class="flex items-center space-x-2 text-xs font-mono text-neutral-300">
+                <span class="w-2 h-2 rounded-full bg-white"></span>
+                <span id="modal-category">RESEARCH BRIEF</span>
+            </div>
+
+            <h3 id="modal-title" class="text-2xl font-bold text-white">Research Brief Title</h3>
+
+            <div id="modal-body" class="text-neutral-300 text-sm leading-relaxed space-y-4">
+                <!-- Dynamic Content injected via JS -->
+            </div>
+
+            <div class="pt-4 border-t border-neutral-800 flex justify-between items-center text-xs text-neutral-400">
+                <span>Author: Andrian Reo</span>
+                <button id="modal-action-btn" class="px-4 py-2 bg-white text-black font-bold rounded-lg hover:bg-neutral-200">Close Brief</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. DEVELOPER CLI FLOATING TERMINAL WIDGET (MONOCHROME) -->
+    <div id="cli-modal" class="fixed bottom-6 right-6 z-50 w-full max-w-lg hidden">
+        <div class="terminal-window border border-neutral-700 rounded-xl shadow-2xl overflow-hidden font-mono text-xs">
+            <!-- Terminal Header Bar -->
+            <div class="bg-neutral-900 px-4 py-2.5 border-b border-neutral-800 flex items-center justify-between select-none">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-neutral-700 cursor-pointer" id="cli-close-btn"></span>
+                    <span class="w-3 h-3 rounded-full bg-neutral-600"></span>
+                    <span class="w-3 h-3 rounded-full bg-neutral-500"></span>
+                    <span class="text-[11px] text-neutral-400 font-semibold ml-2">andrian@web3-analyst:~</span>
+                </div>
+                <div class="text-[10px] text-neutral-500">v1.3.0-cli</div>
+            </div>
+
+            <!-- Terminal Output Window -->
+            <div id="cli-output" class="p-4 h-72 overflow-y-auto space-y-2 text-neutral-300 leading-normal">
+                <div class="text-neutral-400">Welcome to Andrian Reo's Web3 CLI Terminal.</div>
+                <div class="text-neutral-400">Type <span class="text-white font-bold">help</span> to list available commands.</div>
+            </div>
+
+            <!-- Terminal Input Command Line -->
+            <form id="cli-form" class="bg-black/90 px-4 py-2.5 border-t border-neutral-800 flex items-center gap-2">
+                <span class="text-white font-bold">andrian@web3:~$</span>
+                <input type="text" id="cli-input" class="bg-transparent text-white focus:outline-none w-full font-mono text-xs" placeholder="type 'help', 'bitcoin', 'dex'..." autocomplete="off">
+            </form>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // =========================================================
+        // 1. THREE.JS 3D HERO CANVAS (CUBE + ROTATING METALLIC CHAINS)
+        // =========================================================
+        window.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('hero-3d');
+            if (!container || typeof THREE === 'undefined') return;
+
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(38, container.clientWidth / container.clientHeight, 0.1, 100);
+            camera.position.set(0, 0, 10);
+
+            const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            renderer.outputColorSpace = THREE.SRGBColorSpace;
+            container.appendChild(renderer.domElement);
+
+            // Lighting (Pure White & Neutral Silver)
+            const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+            scene.add(ambientLight);
+
+            const mainLight = new THREE.PointLight(0xffffff, 35, 30);
+            mainLight.position.set(4, 5, 6);
+            scene.add(mainLight);
+
+            const secondaryLight = new THREE.PointLight(0xaaaaaa, 25, 25);
+            secondaryLight.position.set(-5, -3, 4);
+            scene.add(secondaryLight);
+
+            // Cube Materials - Metallic Silver Monochrome
+            const cubeMaterial = new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.95 });
+            const chainMaterial = new THREE.MeshStandardMaterial({ color: 0xd4d4d4, metalness: 0.9, roughness: 0.2 });
+
+            // Main Wireframe Cube Group
+            const cubeGroup = new THREE.Group();
+            scene.add(cubeGroup);
+
+            const cubeGeometry = new THREE.BoxGeometry(2.2, 2.2, 2.2);
+            const edgesGeometry = new THREE.EdgesGeometry(cubeGeometry);
+            const wireframe = new THREE.LineSegments(edgesGeometry, cubeMaterial);
+            cubeGroup.add(wireframe);
+
+            // Inner Cube
+            const innerGeometry = new THREE.BoxGeometry(1.15, 1.15, 1.15);
+            const innerEdges = new THREE.EdgesGeometry(innerGeometry);
+            const innerCube = new THREE.LineSegments(innerEdges, new THREE.LineBasicMaterial({ color: 0x888888, transparent: true, opacity: 0.45 }));
+            cubeGroup.add(innerCube);
+
+            // Chain Link Geometry
+            const chainGeometry = new THREE.TorusGeometry(0.19, 0.065, 8, 16);
+            chainGeometry.scale(1.45, 1, 1);
+
+            // Rotating Chains Orbit
+            const chainGroups = [];
+            const chainConfigs = [
+                { radiusX: 2.5, radiusY: 1.8, links: 26, rotation: [0.3, 0.2, 0.4], speed: 0.65, direction: 1 },
+                { radiusX: 2.8, radiusY: 1.5, links: 28, rotation: [1.1, 0.4, 0.2], speed: 0.85, direction: -1 },
+                { radiusX: 2.2, radiusY: 2.1, links: 24, rotation: [0.5, 1.2, 0.8], speed: 1.0, direction: 1 },
+                { radiusX: 2.7, radiusY: 1.9, links: 28, rotation: [1.4, 0.8, 1.1], speed: 0.75, direction: -1 },
+                { radiusX: 2.3, radiusY: 2.3, links: 26, rotation: [0.8, 1.5, 0.3], speed: 1.15, direction: 1 }
+            ];
+
+            chainConfigs.forEach((config, idx) => {
+                const orbitGroup = new THREE.Group();
+                orbitGroup.rotation.set(config.rotation[0], config.rotation[1], config.rotation[2]);
+                scene.add(orbitGroup);
+
+                const linksGroup = new THREE.Group();
+                orbitGroup.add(linksGroup);
+
+                for (let i = 0; i < config.links; i++) {
+                    const angle = (i / config.links) * Math.PI * 2;
+                    const link = new THREE.Mesh(chainGeometry, chainMaterial);
+                    link.position.set(Math.cos(angle) * config.radiusX, Math.sin(angle) * config.radiusY, 0);
+                    link.rotation.z = angle + Math.PI / 2;
+                    if (i % 2 === 0) link.rotation.x = Math.PI / 2;
+                    linksGroup.add(link);
+                }
+
+                chainGroups.push({ group: orbitGroup, speed: config.speed, direction: config.direction, index: idx });
+            });
+
+            // Animation Loop
+            const clock = new THREE.Clock();
+            function animate() {
+                requestAnimationFrame(animate);
+                const delta = clock.getDelta();
+                const elapsed = clock.elapsedTime;
+
+                cubeGroup.rotation.x += delta * 0.22;
+                cubeGroup.rotation.y += delta * 0.30;
+                cubeGroup.rotation.z += delta * 0.12;
+
+                chainGroups.forEach((chain) => {
+                    const direction = chain.direction;
+                    const speed = chain.speed;
+                    chain.group.rotation.x += delta * speed * direction;
+                    chain.group.rotation.y += delta * speed * 0.65 * direction;
+                    chain.group.rotation.z += delta * speed * 0.45 * direction;
+                });
+
+                scene.position.y = Math.sin(elapsed * 0.7) * 0.08;
+                renderer.render(scene, camera);
+            }
+            animate();
+
+            // Resize Handler
+            window.addEventListener('resize', () => {
+                if (!container) return;
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+                renderer.setSize(width, height);
+            });
+        });
+
+        // =========================================================
+        // 2. PROJECT 01 WIDGET: SHA-256 BLOCK MINER
+        // =========================================================
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        const dataInput = document.getElementById('miner-data');
+        const nonceInput = document.getElementById('miner-nonce');
+        const diffSelect = document.getElementById('miner-diff');
+        const hashOutput = document.getElementById('miner-hash-output');
+        const mineBtn = document.getElementById('mine-block-btn');
+        const minerStatus = document.getElementById('miner-status');
+
+        async function updateLiveHash() {
+            if (!dataInput || !nonceInput || !hashOutput) return;
+            const payload = dataInput.value + nonceInput.value;
+            const hash = await sha256(payload);
+            hashOutput.innerText = hash;
+
+            const targetPrefix = '0'.repeat(parseInt(diffSelect.value));
+            if (hash.startsWith(targetPrefix)) {
+                hashOutput.className = 'bg-neutral-900 p-2 rounded text-[10px] text-white font-bold break-all border border-neutral-400 font-mono shadow-md';
+                minerStatus.innerText = 'VALID BLOCK MINED!';
+                minerStatus.className = 'text-[10px] bg-white text-black font-bold px-2 py-0.5 rounded animate-pulse';
+            } else {
+                hashOutput.className = 'bg-neutral-950 p-2 rounded text-[10px] text-neutral-300 break-all border border-neutral-800 font-mono';
+                minerStatus.innerText = `Target: ${targetPrefix}...`;
+                minerStatus.className = 'text-[10px] bg-neutral-800 px-2 py-0.5 rounded text-neutral-300';
+            }
+        }
+
+        if (dataInput && nonceInput && diffSelect) {
+            dataInput.addEventListener('input', updateLiveHash);
+            nonceInput.addEventListener('input', updateLiveHash);
+            diffSelect.addEventListener('change', updateLiveHash);
+            updateLiveHash();
+        }
+
+        if (mineBtn) {
+            mineBtn.addEventListener('click', async () => {
+                mineBtn.disabled = true;
+                mineBtn.innerText = '⛏️ Mining block...';
+                let currentNonce = parseInt(nonceInput.value) || 0;
+                const targetPrefix = '0'.repeat(parseInt(diffSelect.value));
+                let found = false;
+
+                for (let i = 0; i < 5000; i++) {
+                    currentNonce++;
+                    const payload = dataInput.value + currentNonce;
+                    const hash = await sha256(payload);
+                    if (hash.startsWith(targetPrefix)) {
+                        nonceInput.value = currentNonce;
+                        await updateLiveHash();
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    nonceInput.value = currentNonce;
+                    await updateLiveHash();
+                }
+
+                mineBtn.disabled = false;
+                mineBtn.innerHTML = '<span>⛏️</span> Mine Valid Block';
+            });
+        }
+
+        // =========================================================
+        // 3. PROJECT 02 WIDGET: STAKING YIELD CALCULATOR
+        // =========================================================
+        const amountSlider = document.getElementById('stake-amount-slider');
+        const amountVal = document.getElementById('stake-amount-val');
+        const rewardEl = document.getElementById('calc-reward');
+        const totalEl = document.getElementById('calc-total');
+        const apyBadge = document.getElementById('apy-badge');
+        const periodBtns = document.querySelectorAll('.stake-period-btn');
+
+        let selectedDays = 30;
+
+        function updateStakingCalc() {
+            if (!amountSlider) return;
+            const amount = parseFloat(amountSlider.value);
+            amountVal.innerText = amount.toFixed(1) + ' ETH';
+
+            let apy = 12.5;
+            if (selectedDays === 90) apy = 15.0;
+            if (selectedDays === 180) apy = 18.5;
+            if (selectedDays === 365) apy = 24.0;
+
+            apyBadge.innerText = apy.toFixed(1) + '%';
+
+            const reward = amount * (apy / 100) * (selectedDays / 365);
+            const total = amount + reward;
+
+            rewardEl.innerText = '+' + reward.toFixed(3) + ' ETH';
+            totalEl.innerText = total.toFixed(3) + ' ETH';
+        }
+
+        if (amountSlider) {
+            amountSlider.addEventListener('input', updateStakingCalc);
+        }
+
+        periodBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                periodBtns.forEach(b => {
+                    b.className = 'stake-period-btn bg-neutral-900 border border-neutral-800 text-neutral-400 px-1.5 py-1 text-[10px] rounded';
+                });
+                e.target.className = 'stake-period-btn active bg-white text-black px-1.5 py-1 text-[10px] rounded font-bold';
+                selectedDays = parseInt(e.target.getAttribute('data-days'));
+                updateStakingCalc();
+            });
+        });
+        updateStakingCalc();
+
+        // =========================================================
+        // 4. RESEARCH CAROUSEL / 3D COVERFLOW & DRAG CONTROLS
+        // =========================================================
+        const carousel = document.getElementById('research-carousel');
+        const prevBtn = document.getElementById('carousel-prev-btn');
+        const nextBtn = document.getElementById('carousel-next-btn');
+
+        if (carousel) {
+            // Button navigation
+            prevBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: -320, behavior: 'smooth' });
+            });
+            nextBtn.addEventListener('click', () => {
+                carousel.scrollBy({ left: 320, behavior: 'smooth' });
+            });
+
+            // Mouse Drag to Scroll
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            carousel.addEventListener('mousedown', (e) => {
+                isDown = true;
+                startX = e.pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
+            });
+            carousel.addEventListener('mouseleave', () => { isDown = false; });
+            carousel.addEventListener('mouseup', () => { isDown = false; });
+            carousel.addEventListener('mousemove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 1.5;
+                carousel.scrollLeft = scrollLeft - walk;
+            });
+        }
+
+        // =========================================================
+        // 5. RESEARCH FILTERING & FULL MODAL CONTENT (8 TOPICS + ANALOGIES)
+        // =========================================================
+        const filterBtns = document.querySelectorAll('.research-filter-btn');
+        const carouselItems = document.querySelectorAll('.carousel-item');
+        const modal = document.getElementById('research-modal');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalActionBtn = document.getElementById('modal-action-btn');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.className = 'research-filter-btn px-4 py-2 text-xs font-semibold rounded-full bg-neutral-900 text-neutral-400 border border-neutral-800 hover:text-white transition-all';
+                });
+                btn.className = 'research-filter-btn active px-4 py-2 text-xs font-semibold rounded-full bg-white text-black transition-all';
+
+                const cat = btn.getAttribute('data-category');
+                carouselItems.forEach(item => {
+                    if (cat === 'all' || item.getAttribute('data-category') === cat) {
+                        item.style.display = 'flex';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Detailed Research Content DB (Contains Intro, Analogy Box before Key Elements)
+        const detailedResearchDB = {
+            "btc": {
+                title: "Bitcoin (BTC): Arsitektur Kelangkaan & Komoditas Digital",
+                category: "MARKET & ASSET PRIMITIVE",
+                body: `<p>Bitcoin diciptakan oleh Satoshi Nakamoto pada tahun 2008 sebagai sistem uang elektronik *peer-to-peer* tanpa perantara sentral. Batas pasokan maksimum terkunci secara matematis di angka <strong>21.000.000 BTC</strong>, dengan pasokan beredar saat ini mencapai ~19.7+ juta BTC (di mana disinyalir ~3 hingga 4 juta BTC telah hilang selamanya akibat akses dompet yang hilang).</p>
+                       <p>Protokol Bitcoin mengalami siklus <strong>Halving</strong> setiap 210.000 blok (~4 tahun sekali) untuk memotong laju emisi koin baru sebesar 50%. Tingkat kesulitan penambangan (*Difficulty Adjustment*) diperbarui otomatis setiap 2.016 blok (~14 hari) agar interval waktu pembuatan blok baru konsisten berada di rata-rata 10 menit.</p>
+                       
+                       <div class="bg-neutral-900 border border-neutral-700/80 rounded-xl p-4 my-4 space-y-2">
+                           <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider font-mono">
+                               <span>💡 ANALOGI VISUAL</span>
+                           </div>
+                           <p class="text-xs text-neutral-300 italic leading-relaxed">
+                               "Bayangkan sebuah buku catatan (ledger) raksasa yang diletakkan di tengah alun-alun kota tanpa pintu terkunci. Semua orang bisa melihat berapa saldo di setiap brankas digital tanpa tahu nama pemilik fisiknya. Ketika seseorang mengirim saldo ke brankas lain, ribuan pengawas independen di seluruh dunia mencatat dan memverifikasi transaksi tersebut secara serentak. Tidak ada bank yang bisa membekukan brankasmu, tidak ada otoritas yang bisa mencetak saldo baru dari udara hampa, dan jumlah total koin yang ada di seluruh dunia sudah terkunci mati secara sistematis tidak akan pernah melebihi 21 juta unit."
+                           </p>
+                       </div>
+
+                       <p class="font-bold text-white mt-2">Elemen Kunci Bitcoin:</p>
+                       <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+                           <li><strong>Absolute Scarcity:</strong> Batas keras 21 juta BTC tanpa inflasi sembarangan.</li>
+                           <li><strong>Proof of Work (PoW):</strong> Keamanan konsensus berbasis daya komputasi SHA-256 riil.</li>
+                           <li><strong>Difficulty Adjustment:</strong> Penyesuaian kesulitan penambangan otomatis tiap 2 minggu.</li>
+                           <li><strong>Decentralized Nodes:</strong> Jaringan ribuan simpul independen di seluruh dunia.</li>
+                       </ul>`
+            },
+
+            "crypto": {
+                title: "Kriptografi: Fondasi Matematika Pengaman Web3",
+                category: "SECURITY & PRIMITIVES",
+                body: `<p>Kriptografi adalah pilar utama yang menjamin kerahasiaan, integritas data, dan otentikasi di seluruh Web3. Menggunakan fungsi Hash satu arah seperti SHA-256 untuk memadatkan data menjadi string 64 karakter tak terbalikkan, serta *Elliptic Curve Cryptography* (ECDSA/Secp256k1) untuk menciptakan pasangan Kunci Publik dan Kunci Privat.</p>
+                       <p>Teknologi terkini juga mengintegrasikan *Zero-Knowledge Proofs* (zk-SNARKs/zk-STARKs) yang memungkinkan pembuktian kebenaran suatu informasi tanpa perlu mengungkap isi informasi itu sendiri.</p>
+
+                       <div class="bg-neutral-900 border border-neutral-700/80 rounded-xl p-4 my-4 space-y-2">
+                           <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider font-mono">
+                               <span>💡 ANALOGI VISUAL</span>
+                           </div>
+                           <p class="text-xs text-neutral-300 italic leading-relaxed">
+                               "Bayangkan kamu membagikan ribuan gembok terbuka (Public Key) kepada siapapun di dunia. Siapapun bisa memasukkan surat rahasia ke dalam kotak milikmu lalu menguncinya dengan gembok itu. Namun, hanya KAMU yang memegang kunci fisik unik (Private Key) yang sanggup membuka gembok tersebut. Ketika kamu mengirim pesan balik, kamu membubuhkan stempel berlapis lilin ajaib (Digital Signature); semua orang bisa memverifikasi bahwa stempel itu asli milikmu tanpa pernah perlu melihat atau menduplikasi kunci rahasiamu."
+                           </p>
+                       </div>
+
+                       <p class="font-bold text-white mt-2">Elemen Kunci Kriptografi:</p>
+                       <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+                           <li><strong>Asymmetric Encryption:</strong> Pasangan Public Key (Alamat) & Private Key (Kunci Rahasia).</li>
+                           <li><strong>Cryptographic Hashing (SHA-256):</strong> Fungsi deterministik satu arah tanpa colision.</li>
+                           <li><strong>Digital Signature (ECDSA):</strong> Pembuktian kepemilikan transaksi secara sah.</li>
+                           <li><strong>Zero-Knowledge Proofs (ZKP):</strong> Verifikasi data tanpa mengumbar privasi.</li>
+                       </ul>`
+            },
+
+            "chain": {
+                title: "Blockchain: Arsitektur Buku Besar Terdistribusi",
+                category: "PROTOCOL ARCHITECTURE",
+                body: `<p>Blockchain adalah basis data terdistribusi di mana kumpulan transaksi dikelompokkan ke dalam blok-blok yang saling terhubung menggunakan kalkulasi *hash* kriptografi (*hash-linked list*). Sifat dasarnya adalah *immutable* (data yang tercatat tidak dapat diubah atau dihapus) dan terdesentralisasi tanpa bergantung pada server tunggal (*single point of failure*).</p>
+                       <p>Perubahan status (*State Machine*) disepakati bersama oleh ribuan validator/miner melalui mekanisme konsensus global.</p>
+
+                       <div class="bg-neutral-900 border border-neutral-700/80 rounded-xl p-4 my-4 space-y-2">
+                           <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider font-mono">
+                               <span>💡 ANALOGI VISUAL</span>
+                           </div>
+                           <p class="text-xs text-neutral-300 italic leading-relaxed">
+                               "Bayangkan sekelompok orang menulis buku harian bersama. Setiap halaman baru (Blok) berisi daftar transaksi terbaru serta rangkuman sidik jari digital (Hash) dari halaman sebelumnya. Setelah satu halaman selesai ditulis, semua orang menempelkan stempel segel tembus pandang yang tidak bisa dirusak. Jika seseorang mencoba diam-diam merobek atau mengubah angka di halaman 5, sidik jari di halaman 6 hingga seterusnya akan langsung rusak dan ditolak oleh seluruh peserta jaringan."
+                           </p>
+                       </div>
+
+                       <p class="font-bold text-white mt-2">Elemen Kunci Blockchain:</p>
+                       <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+                           <li><strong>Immutability:</strong> Data tidak bisa dimanipulasi setelah dikonfirmasi blok.</li>
+                           <li><strong>Distributed Ledger:</strong> Salinan identik tersimpan di ribuan simpul global.</li>
+                           <li><strong>P2P Network:</strong> Komunikasi antar node secara langsung tanpa server pusat.</li>
+                           <li><strong>State Machine Replication:</strong> Transisi status transaksi yang deterministik.</li>
+                       </ul>`
+            },
+
+            "defi": {
+                title: "DeFi: Ekosistem Keuangan Tanpa Perantara",
+                category: "FINANCIAL INFRASTRUCTURE",
+                body: `<p>Decentralized Finance (DeFi) merekonstruksi sistem keuangan tradisional (perbankan, pinjaman, asuransi, dan obligasi) menjadi aplikasi terprogram di atas smart contract. DeFi bekerja tanpa kustodian (*non-custodial*), 24/7, dan memiliki sifat *composability* ("Money Legos") di mana protokol yang berbeda bisa saling dihubungkan secara efisien.</p>`,
+                
+                analogies: `<div class="bg-neutral-900 border border-neutral-700/80 rounded-xl p-4 my-4 space-y-2">
+                           <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider font-mono">
+                               <span>💡 ANALOGI VISUAL</span>
+                           </div>
+                           <p class="text-xs text-neutral-300 italic leading-relaxed">
+                               "Bayangkan mengganti seluruh gedung bank besar beserta ribuan pegawainya dengan barisan mesin penjual otomatis (vending machine) transparan di pinggir jalan. Kamu tidak perlu mengisi formulir, tidak perlu verifikasi KTP/Kredit, dan tidak perlu persetujuan manajer. Kamu cukup memasukkan aset kripto sebagai jaminan ke dalam slot mesin, dan mesin akan otomatis mengeluarkan pinjaman atau bunga secara real-time berdasarkan rumus matematika terprogram."
+                           </p>
+                       </div>`,
+                
+                keyElements: `<p class="font-bold text-white mt-2">Elemen Kunci DeFi:</p>
+                       <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+                           <li><strong>Non-Custodial:</strong> Pengguna memegang kendali penuh atas kunci privatnya.</li>
+                           <li><strong>Money Legos (Composability):</strong> Protokol dapat dikombinasikan satu sama lain.</li>
+                           <li><strong>Permissionless Access:</strong> Siapapun dapat mengakses tanpa kelayakan kredit.</li>
+                           <li><strong>Automated Market Making & Yield Farming:</strong> Insentif likuiditas terprogram.</li>
+                       </ul>`
+            },
+
+            "dex": {
+                title: "DEX (Decentralized Exchange): Perdagangan AMM Terdesentralisasi",
+                category: "TRADING ARCHITECTURE",
+                body: `<p>DEX memfasilitasi pertukaran aset kripto langsung antar dompet pengguna tanpa menyimpan dana di bursa sentral. Menggunakan protokol *Automated Market Maker* (AMM) dengan formula constant product ($x \cdot y = k$) seperti Uniswap, di mana Liquidity Provider (LP) menyetorkan pasangan token ke dalam kolam (*liquidity pool*) untuk memperoleh bagi hasil dari biaya transaksi.</p>
+                       
+                       <div class="bg-neutral-900 border border-neutral-700/80 rounded-xl p-4 my-4 space-y-2">
+                           <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider font-mono">
+                               <span>💡 ANALOGI VISUAL</span>
+                           </div>
+                           <p class="text-xs text-neutral-300 italic leading-relaxed">
+                               "Bayangkan dua mangkuk besar yang saling terhubung pada timbangan otomatis: mangkuk A berisi Apel (BTC) dan mangkuk B berisi Jeruk (USDT). Tidak ada pedagang yang melayani penukaran. Jika kamu mengambil Apel dari mangkuk A, kamu wajib memasukkan sejumlah Jeruk ke mangkuk B agar perkalian isi kedua mangkuk tetap seimbang. Semakin banyak Apel yang kamu ambil, semakin mahal 'harga' Apel berikutnya secara otomatis."
+                           </p>
+                       </div>
+
+                       <p class="font-bold text-white mt-2">Elemen Kunci DEX & AMM:</p>
+                       <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+                           <li><strong>Constant Product Formula (x * y = k):</strong> Penentuan harga otomatis berbasis rasio kolam.</li>
+                           <li><strong>Liquidity Pools:</strong> Pendanaan kolektif dari Liquidity Providers (LP).</li>
+                           <li><strong>Slippage & Impermanent Loss:</strong> Pergeseran harga transaksi & risiko perubahan rasio token.</li>
+                           <li><strong>Peer-to-Pool Trading:</strong> Bertransaksi langsung dengan smart contract kolam.</li>
+                       </ul>`
+            },
+
+            "wallet": {
+                title: "Wallets: Manajemen Kunci Privat (Hot vs Cold Storage)",
+                category: "SECURITY & STORAGE",
+                body: `<p>Dompet kripto sebenarnya tidak menyimpan koin di dalam perangkat, melainkan menyimpan Kunci Privat (Private Key) dan *Seed Phrase* (12 atau 24 kata pemulihan) yang berfungsi membuktikan kepemilikan atas saldo di blockchain.</p>
+                       <p>Terbagi menjadi <strong>Hot Wallet</strong> (software terhubung internet seperti MetaMask, cocok untuk transaksi harian) dan <strong>Cold Wallet</strong> (hardware fisik offline seperti Ledger/Trezor, terlindungi dari ancaman malware/retasan siber).</p>
+
+                       <div class="bg-neutral-900 border border-neutral-700/80 rounded-xl p-4 my-4 space-y-2">
+                           <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider font-mono">
+                               <span>💡 ANALOGI VISUAL</span>
+                           </div>
+                           <p class="text-xs text-neutral-300 italic leading-relaxed">
+                               "Hot Wallet itu seperti dompet di saku celanamu atau aplikasi m-banking di HP—sangat praktis untuk belanja harian/trading, tapi ada risiko jika HP-mu diretas atau hilang. Sedangkan Cold Wallet itu seperti brankas baja berat yang terkubur di bawah tanah tanpa sambungan listrik atau internet; untuk menandatangani transaksi, kamu harus secara fisik menekan tombol tombol di alat khusus tersebut."
+                           </p>
+                       </div>
+
+                       <p class="font-bold text-white mt-2">Elemen Kunci Wallets:</p>
+                       <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+                           <li><strong>Seed Phrase (BIP-39):</strong> 12/24 kata acak yang memulihkan seluruh pasangan kunci.</li>
+                           <li><strong>Self-Custody:</strong> Prinsip 'Not your keys, not your coins'.</li>
+                           <li><strong>Hot Storage:</strong> Kemudahan akses dengan risiko koneksi internet.</li>
+                           <li><strong>Cold Storage (Air-Gapped):</strong> Isolasi total kunci dari jaringan luar.</li>
+                       </ul>`
+            },
+
+            "staking": {
+                title: "Staking: Mekanisme Validator & Delegator di Proof-of-Stake",
+                category: "CONSENSUS & YIELD",
+                body: `<p>Pada jaringan Proof-of-Stake (PoS), konsensus dipertahankan oleh peserta yang mengunci (*stake*) token native mereka sebagai jaminan ekonomi. <strong>Validator</strong> mengoperasikan server node 24/7 untuk memverifikasi transaksi dan mengusulkan blok baru. <strong>Delegator</strong> adalah pemegang koin yang menaruh tokennya ke validator tepercaya untuk berbagi imbal hasil (*staking yield*) tanpa harus memelihara server fisik.</p>
+
+                       <div class="bg-neutral-900 border border-neutral-700/80 rounded-xl p-4 my-4 space-y-2">
+                           <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider font-mono">
+                               <span>💡 ANALOGI VISUAL</span>
+                           </div>
+                           <p class="text-xs text-neutral-300 italic leading-relaxed">
+                               "Bayangkan kompetisi di mana siapa saja boleh menjadi wasit. Namun untuk menjadi wasit (Validator), kamu harus meletakkan uang jaminan deposito (Staking) sebesar Rp100 juta di atas meja. Jika kamu memimpin pertandingan dengan jujur dan teliti, kamu mendapatkan gaji rutin (Rewards). Namun jika kamu sengaja curang atau ketiduran saat bertugas (Downtime/Slashing), uang jaminanmu di atas meja akan dipotong secara otomatis oleh sistem. Pemain biasa (Delegator) bisa menitipkan uangnya ke wasit paling jujur untuk bagi hasil laba."
+                           </p>
+                       </div>
+
+                       <p class="font-bold text-white mt-2">Elemen Kunci Staking:</p>
+                       <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+                           <li><strong>Validator Node:</strong> Operator server pengusul & pemverifikasi blok.</li>
+                           <li><strong>Delegation:</strong> Titip pasokan koin ke validator untuk mendapatkan APY.</li>
+                           <li><strong>Slashing Risk:</strong> Penalti pemotongan token jika node berbuat curang atau offline.</li>
+                           <li><strong>Unbonding Period:</strong> Masa tunggu pencairan kunci staking.</li>
+                       </ul>`
+            },
+
+            "altcoin": {
+                title: "Altcoins: Kategori Sektor, DePIN, RWA & Rotasi Modal",
+                category: "ECOSYSTEM ANALYSIS",
+                body: `<p>Istilah "Altcoin" mencakup seluruh aset kripto alternatif selain Bitcoin. Altcoins dikategorikan berdasarkan fungsi utility teknisnya: **Layer-1 Smart Contract Platforms** (Ethereum, Solana), **Layer-2 Scaling Solutions** (Arbitrum, Optimism), **DePIN** (*Decentralized Physical Infrastructure Networks*), **RWA** (*Real World Assets* tokenization), dan sektor AI/Data.</p>
+                       <p>Altcoin memiliki siklus rotasi modal (*Altseason*) dengan profil risiko dan volatilitas yang jauh lebih tinggi dibanding Bitcoin.</p>
+
+                       <div class="bg-neutral-900 border border-neutral-700/80 rounded-xl p-4 my-4 space-y-2">
+                           <div class="flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider font-mono">
+                               <span>💡 ANALOGI VISUAL</span>
+                           </div>
+                           <p class="text-xs text-neutral-300 italic leading-relaxed">
+                               "Jika Bitcoin adalah Emas Murni (standar penyimpan nilai yang stabil dan independen), maka Altcoins adalah saham-saham perusahaan rintisan (Startups) di berbagai sektor industri. Ada altcoin yang seperti perusahaan jalan tol (Layer-1/Layer-2), ada yang seperti jaringan listrik publik (DePIN), dan ada yang seperti sekuritas investasi (RWA). Nilai altcoin sangat bergantung pada eksekusi produk, adopsi pengguna, dan tokenomics."
+                           </p>
+                       </div>
+
+                       <p class="font-bold text-white mt-2">Elemen Kunci Altcoin & Sektor:</p>
+                       <ul class="list-disc pl-5 space-y-1 text-xs text-neutral-400">
+                           <li><strong>Layer-1 & Layer-2:</strong> Infrastruktur fondasi eksekusi smart contract.</li>
+                           <li><strong>DePIN & RWA:</strong> Jembatan infrastruktur fisik & aset dunia nyata ke on-chain.</li>
+                           <li><strong>Tokenomics & Unlock Schedules:</strong> Distribusi pasokan koin untuk investor VC vs Publik.</li>
+                           <li><strong>Capital Rotation Curve:</strong> Aliran likuiditas dari BTC → ETH → Large Caps → Small Caps.</li>
+                       </ul>`
+            }
+        };
+
+        // Open Modal Handler
+        document.querySelectorAll('.carousel-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const id = item.getAttribute('data-id');
+                const data = detailedResearchDB[id];
+
+                if (data && modal) {
+                    document.getElementById('modal-title').innerText = data.title;
+                    document.getElementById('modal-category').innerText = data.category;
+                    
+                    let htmlContent = data.body;
+                    if (data.analogies) htmlContent += data.analogies;
+                    if (data.keyElements) htmlContent += data.keyElements;
+
+                    document.getElementById('modal-body').innerHTML = htmlContent;
+                    modal.classList.remove('opacity-0', 'pointer-events-none');
+                }
+            });
+        });
+
+        if (closeModalBtn) {
+            closeModalBtn.addEventListener('click', () => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+            });
+        }
+        if (modalActionBtn) {
+            modalActionBtn.addEventListener('click', () => {
+                modal.classList.add('opacity-0', 'pointer-events-none');
+            });
+        }
+
+        // =========================================================
+        // 6. DEVELOPER CLI FLOATING TERMINAL (MONOCHROME & EXPANDED COMMANDS)
+        // =========================================================
+        const cliToggleBtn = document.getElementById('cli-toggle-btn');
+        const cliModal = document.getElementById('cli-modal');
+        const cliCloseBtn = document.getElementById('cli-close-btn');
+        const cliForm = document.getElementById('cli-form');
+        const cliInput = document.getElementById('cli-input');
+        const cliOutput = document.getElementById('cli-output');
+
+        if (cliToggleBtn && cliModal) {
+            cliToggleBtn.addEventListener('click', () => {
+                cliModal.classList.toggle('hidden');
+                if (!cliModal.classList.contains('hidden')) {
+                    cliInput.focus();
+                }
+            });
+        }
+
+        if (cliCloseBtn) {
+            cliCloseBtn.addEventListener('click', () => {
+                cliModal.classList.add('hidden');
+            });
+        }
+
+        const cliCommands = {
+            help: () => `Available CLI commands:<br>
+                <span class="text-white font-bold">bitcoin</span> - Bitcoin research summary<br>
+                <span class="text-white font-bold">cryptography</span> - Cryptographic primitives<br>
+                <span class="text-white font-bold">blockchain</span> - Distributed ledger mechanics<br>
+                <span class="text-white font-bold">defi</span> - Decentralized Finance summary<br>
+                <span class="text-white font-bold">dex</span> - AMM & DEX architecture<br>
+                <span class="text-white font-bold">wallets</span> - Hot & Cold storage security<br>
+                <span class="text-white font-bold">staking</span> - Proof-of-Stake mechanics<br>
+                <span class="text-white font-bold">altcoins</span> - DePIN, RWA & sector breakdown<br>
+                <span class="text-white font-bold">about</span> - Brief analyst bio<br>
+                <span class="text-white font-bold">projects</span> - Summary of key repositories<br>
+                <span class="text-white font-bold">skills</span> - Core technical stack<br>
+                <span class="text-white font-bold">matrix</span> - Digital rain simulation<br>
+                <span class="text-white font-bold">clear</span> - Clear terminal screen<br>
+                <span class="text-white font-bold">exit</span> - Close CLI window`,
+
+            bitcoin: () => `BTC: 21M Supply Cap | Proof-of-Work | SHA-256 | Difficulty Adj every 2016 blocks. Digital Gold primitive.`,
+            cryptography: () => `Cryptography: Public/Private Keys (ECDSA secp256k1), SHA-256 Hashing, Zero-Knowledge Proofs (zk-SNARKs).`,
+            blockchain: () => `Blockchain: Immutable, append-only distributed ledger linked via cryptographic hashes in P2P consensus.`,
+            defi: () => `DeFi: Non-custodial financial primitives on smart contracts. Money Legos, Lending pools, Yield farming.`,
+            dex: () => `DEX: Automated Market Maker (AMM) protocols utilizing Constant Product Formula (x * y = k).`,
+            wallets: () => `Wallets: Self-custody key management. Hot Wallets (Online/Metamask) vs Cold Wallets (Hardware/Air-gapped).`,
+            staking: () => `Staking: Proof-of-Stake consensus. Validator nodes earn block rewards while Delegators stake capital with Slashing risks.`,
+            altcoins: () => `Altcoins: Ecosystem categorization across Layer-1, Layer-2 scaling, DePIN, and RWA tokenization.`,
+            
+            about: () => `Andrian Reo | Web3 & Crypto Analyst<br>Specializing in on-chain research, derivatives market structure, and smart contract architecture.`,
+            projects: () => `1. Blockchain From Scratch [JS, PoW]<br>2. DeFi Staking Protocol [Solidity, Foundry]<br>3. Crypto Trading Analytics [Python]`,
+            skills: () => `Stack: Solidity, Python, JavaScript, Foundry, Ethers.js, On-Chain Analytics, Technical Analysis.`,
+            matrix: () => `<span class="text-neutral-300 font-mono">01000001 01010010 00110011 00110000 01010111 01000101 01000010 00110011</span><br><span class="text-neutral-400">Entering Web3 Matrix... Protocol verified.</span>`,
+            
+            clear: () => {
+                cliOutput.innerHTML = '';
+                return '';
+            },
+            exit: () => {
+                cliModal.classList.add('hidden');
+                return 'Closing CLI session...';
+            }
+        };
+
+        if (cliForm) {
+            cliForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const cmd = cliInput.value.trim().toLowerCase();
+                cliInput.value = '';
+
+                if (!cmd) return;
+
+                const userCmdLine = document.createElement('div');
+                userCmdLine.className = 'text-white font-bold';
+                userCmdLine.innerHTML = `<span class="text-neutral-400">andrian@web3:~$</span> ${cmd}`;
+                cliOutput.appendChild(userCmdLine);
+
+                const responseLine = document.createElement('div');
+                responseLine.className = 'text-neutral-300 text-xs pl-2 border-l border-neutral-700 my-1';
+
+                if (cliCommands[cmd]) {
+                    const result = cliCommands[cmd]();
+                    if (result) responseLine.innerHTML = result;
+                } else {
+                    responseLine.innerHTML = `<span class="text-neutral-400">Command not found: '${cmd}'. Type <span class="text-white font-bold">help</span> for assistance.</span>`;
+                }
+
+                if (responseLine.innerHTML) {
+                    cliOutput.appendChild(responseLine);
+                }
+                
+                cliOutput.scrollTop = cliOutput.scrollHeight;
+            });
+        }
+
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        console.log("Andrian Reo Web3 Portfolio (3D Coverflow Research Edition) Initialized.");
+    </script>
+</body>
+</html>
